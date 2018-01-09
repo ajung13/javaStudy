@@ -7,8 +7,8 @@ public class MainClass {
 	static int testCase;
 
 	public static void main(String[] args) throws FileNotFoundException {
-		// TODO Auto-generated method stub
-		File file = new File("input.txt");
+		String filePath = "C:\\Users\\cwhth\\workspace\\javaStudy\\src\\lgCodeMonster\\input.txt";
+		File file = new File(filePath);
 		Scanner scn = new Scanner(file);
 		Composition1 solution = new Composition1();
 		
@@ -23,7 +23,12 @@ public class MainClass {
 				b = scn.nextInt();
 				solution.setFunc(j, a, b);
 			}
-			solution.printFunc();
+			//solution.printFunc();
+			
+			solution.calculate();
+			
+			System.out.println(solution.getAnswer());
+//			System.out.println();
 			
 			solution.delete();
 		}
