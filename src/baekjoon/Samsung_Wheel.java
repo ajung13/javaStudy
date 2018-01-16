@@ -62,6 +62,7 @@ public class Samsung_Wheel {
 					arr[i] = arr[i-1];
 				arr[0] = tmp;
 			}
+			
 			return;
 		}
 		
@@ -140,12 +141,26 @@ public class Samsung_Wheel {
 					break;
 			}
 			
+			System.out.println("flags");
+			for(int j = 0; j < wheelNum; j++)
+				System.out.println(rotateFlag[j] + " ");
+			System.out.println();
+			
 			//if the (rotate) flag is not 0, rotate that wheel
 			for(int j = 0; j < wheelNum; j++){
-				if(rotateFlag[j] != 0)
+				if(rotateFlag[j] != 0){
 					wheels[j].rotation(rotateFlag[j]);
+					System.out.println("rotation " + j + "th wheel");
+					for(int k= 0; k <wheelNum; k++){
+						if(k == j)
+							System.out.print("    ->");
+						wheels[k].print();
+					}
+					System.out.println();
+				}
 			}
 			
+			System.out.println();
 			rotateFlag = null;
 		}
 	}
