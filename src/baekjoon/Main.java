@@ -3,68 +3,45 @@ package baekjoon;
 import java.util.Scanner;
 
 public class Main{
-	public static void main(String[] args){
-		lab solution = new lab();
-		solution.virus();
-		System.out.print(solution.safe_score());
-	}
-	
-	private static class lab{
-		private int m, n;
-		private int[][] labMap;
-		public lab(){
+	private static class treasure{
+		private int[] a, b;
+		private int n;
+		private int[] idx;
+		public treasure(){
 			//get inputs
 			Scanner scn = new Scanner(System.in);
-			this.m = scn.nextInt();
-			this.n = scn.nextInt();
-			labMap = new int[m][n];
-			for(int i = 0; i < m; i++){
-				for(int j = 0; j < n; j++)
-					labMap[i][j] = scn.nextInt();
-			}
+			n = scn.nextInt();
+			a = new int[n];
+			b = new int[n];
+			for(int i = 0; i < n; i++)
+				a[i] = scn.nextInt();
+			for(int i = 0; i < n; i++)
+				b[i] = scn.nextInt();
 			scn.close();
 		}
 		
-		private void virus(){
-			for(int i = 0; i < m; i++){
-				for(int j = 0; j < n; j++)
-					if(labMap[i][j] == 2)
-						spread_virus(i, j);
-			}
-			printLab();
-		}
-		
-		private void spread_virus(int x, int y){
-			if(labMap[x][y] == 1)	return;
-			labMap[x][y] = 2;
-			if(x != 0 && labMap[x-1][y] == 0)
-				spread_virus(x-1, y);
-			if(y != 0 && labMap[x][y-1] == 0)
-				spread_virus(x, y-1);
-			if(x != m-1 && labMap[x+1][y] == 0)
-				spread_virus(x+1, y);
-			if(y != n-1 && labMap[x][y+1] == 0)
-				spread_virus(x, y+1);
-		}
-		private int safe_score(){
-			int score = 0;
-			for(int i = 0; i < m; i++){
+		public void sorting(){
+			//sorting A
+			for(int i = 0; i < n; i++){
+				//find the value of A[i]
 				for(int j = 0; j < n; j++){
-					if(labMap[i][j] == 0)
-						score++;
 				}
 			}
-			return score;
 		}
 		
-		private void printLab(){
-			System.out.println("printLab");
-			for(int i = 0; i < m; i++){
-				for(int j = 0; j < n; j++)
-					System.out.print(labMap[i][j] + " ");
-				System.out.println();
-			}
-			System.out.println();
+		public int getS(){
+			//Calculate the value of S
+			//and this function must be called after 'sorting' function is called
+			int S = 0;
+			for(int i = 0; i < n; i++)
+				S += (a[i] * b[i]); 
+			return S;
 		}
+	}
+	public static void main(String[] args){
+		treasure solution = new treasure();
+		solution.sorting();
+		System.out.println(solution.getS());
+		return;
 	}
 }
