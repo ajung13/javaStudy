@@ -45,7 +45,7 @@ public class Main{
 			int size = n-1;
 			Arrays.sort(input_op);
 			
-			int cnt = 1;
+			int cnt = 0;
 			while(true){
 				int i;
 				System.out.print(cnt + ": ");
@@ -63,10 +63,23 @@ public class Main{
 				else{
 					int idx = findCeil(input_op[i], i+1, size-1);
 					swapOp(i, idx);
-					
+					Arrays.sort(input_op, i+1, size);
 				}
+				
+				cnt++;
 			}
 		}
+		
+		private int findCeil(int first, int l, int h) {
+			int ceilIndex = l;
+			
+			for(int i = l+1; i <= h; i++){
+				if(input_op[i] > first && input_op[i] < input_op[ceilIndex])
+					ceilIndex = i;
+			}
+			return ceilIndex;
+		}
+
 		private void swapOp(int i, int j){
 			int tmp = input_op[i];
 			input_op[i] = input_op[j];
