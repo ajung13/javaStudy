@@ -11,6 +11,7 @@ public class Main{
 		private int min, max;
 		
 		public guguClass(){
+			//get inputs
 			Scanner scn = new Scanner(System.in);
 			n = scn.nextInt();
 			input_num = new int[n];
@@ -21,7 +22,11 @@ public class Main{
 			for(int i = 0; i < 4; i++){
 				op[i] = scn.nextInt();
 			}
+			scn.close();
 			
+			//using input_operator array
+			//for example, if op[] = {1, 2, 3, 4},
+			//then input_op[] = {0, 1, 1, 2, 2, 2, 3, 3, 3, 3}
 			input_op = new int[n-1];
 			int idx = 0;
 			for(int i = 0; i < 4; i++){
@@ -31,7 +36,9 @@ public class Main{
 				}
 			}
 			
-			scn.close();
+			//initialize min and max
+			min = Integer.MAX_VALUE;
+			max = Integer.MIN_VALUE;
 		}
 		
 		public int getMin(){
@@ -43,16 +50,18 @@ public class Main{
 
 		public void solution() {
 			int size = n-1;
-			Arrays.sort(input_op);
+			Arrays.sort(input_op);		//this will be the first operators
 			
-			int cnt = 0;
 			while(true){
 				int i;
-				System.out.print(cnt + ": ");
-				for(i = 0; i < size; i++)
-					System.out.print(input_op[i] + " ");
-				System.out.println();
 				
+				//now input_op[] is the new operator array
+				//we have to calculate using that operators
+				int tmp = calculate(input_op);
+				if(tmp > max)	max = tmp;
+				if(tmp < min)	min = tmp;
+				
+				//then find another combination of operator array
 				for(i = size-2; i >= 0; --i){
 					if(input_op[i] < input_op[i+1])
 						break;
@@ -66,7 +75,6 @@ public class Main{
 					Arrays.sort(input_op, i+1, size);
 				}
 				
-				cnt++;
 			}
 		}
 		
@@ -84,6 +92,26 @@ public class Main{
 			int tmp = input_op[i];
 			input_op[i] = input_op[j];
 			input_op[j] = tmp;
+		}
+		
+		private int calculate(int[] op){
+			//by using op[] and input_num[], calculate that formula
+			int result = input_num[0];
+			for(int i = 0; i < n-1; i++){
+				result = operationHelper(result, input_num[i+1], op[i]);
+			}
+			return result;
+		}
+		
+		private int operationHelper(int a, int b, int op){
+			int result = 0;
+			switch(op){
+			case 0:	result = a+b;	break;
+			case 1:	result = a-b;	break;
+			case 2:	result = a*b;	break;
+			case 3:	result = a/b;	break;
+			}
+			return result;			
 		}
 	}
 	public static void main(String args[]){
