@@ -22,7 +22,8 @@ public class Samsung_Soccer{
 		}
 		public void findMin() {
 			int[] team = new int[n/2];
-			combination(team, 0);
+			team[0] = 0;
+			combination(team, 1);
 			team = null;
 		}
 		
@@ -53,7 +54,7 @@ public class Samsung_Soccer{
 		}
 		
 		private void combination(int[] team, int idx){
-			if(idx == n/2){
+			if(idx >= n/2){
 				int tmp = diff(team);
 				if(tmp < min)
 					min = tmp;
