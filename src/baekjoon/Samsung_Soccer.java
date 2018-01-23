@@ -2,7 +2,7 @@ package baekjoon;
 
 import java.util.Scanner;
 
-public class Main{
+public class Samsung_Soccer{
 	private static class Soccer{
 		private int[][] input;
 		private int n;
@@ -71,7 +71,7 @@ public class Main{
 			}
 		}
 	}
-	public static void main(String[] args){
+	public static void mainSoccer(String[] args){
 		Soccer solution = new Soccer();
 		solution.findMin();
 		System.out.println(solution.getMin());

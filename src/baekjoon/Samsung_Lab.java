@@ -2,7 +2,7 @@ package baekjoon;
 
 import java.util.Scanner;
 
-public class Lab{
+public class Samsung_Lab{
 	private static class lab{
 		private int m, n;
 		private int[][] labMap;
@@ -94,15 +94,6 @@ public class Lab{
 				}
 			}
 			return score;
-		}
-		
-		private void printLab(){
-			for(int i = 0; i < m; i++){
-				for(int j = 0; j < n; j++)
-					System.out.print(tmp[i][j] + " ");
-				System.out.println();
-			}
-			System.out.println();
 		}
 	}
 	
