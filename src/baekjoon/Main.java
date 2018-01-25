@@ -1,5 +1,6 @@
 package baekjoon;
 
+import java.util.Arrays;
 import java.util.Scanner;
 
 public class Main{
@@ -7,6 +8,7 @@ public class Main{
 		private int n;
 		private int[] T, P;
 		private int profit;
+		private int[] maxProb;
 		public Resign(){
 			Scanner scn = new Scanner(System.in);
 			n = scn.nextInt();
@@ -20,9 +22,41 @@ public class Main{
 			profit = 0;
 		}
 		public void solve() {
-			// TODO Auto-generated method stub
+			//we use 'maxProb' array
+			maxProb = new int[n];
+			Arrays.fill(maxProb, 0);
+			for(int i = 0; i < n; i++){
+				if(T[i] + i < n+1){
+					if(i != 0)
+						maxProb[i] = maxProb[i-1] + P[i];
+					else
+						maxProb[i] = P[i];
+				}
+				else if(i != 0)
+					maxProb[i] = maxProb[i-1];
+			}
 			
+			counsel(0, 0);
 		}
+		
+		private void counsel(int idx, int price){
+			if(idx >= n){
+				if(price > profit)
+					profit = price;
+				return;
+			}
+			if(price + maxProb[idx] < profit)
+				return;
+			
+			//when counseling today(idx day)
+			if(idx+T[idx] <= n)
+				counsel(idx+T[idx], price + P[idx]);
+			//when not counseling today
+			counsel(idx+1, price);
+			
+			return;
+		}
+		
 		public int getProfit() {
 			return profit;
 		}
