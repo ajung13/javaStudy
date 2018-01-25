@@ -2,7 +2,7 @@ package baekjoon;
 
 import java.util.Scanner;
 
-public class Main{
+public class Slope{
 	private static class Path{
 		private int n, l;
 		private int[][] input;
@@ -140,7 +140,7 @@ public class Main{
 		}
 		
 	}
-	public static void main(String[] args){
+	public static void mainSlope(String[] args){
 		Path solution = new Path();
 		solution.solve();
 		System.out.print(solution.getPath());
