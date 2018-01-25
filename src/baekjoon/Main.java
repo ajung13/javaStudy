@@ -22,7 +22,6 @@ public class Main{
 		}
 		
 		public void solve() {
-			// TODO Auto-generated method stub
 			for(int i = 0; i < n; i++){
 				
 			}
