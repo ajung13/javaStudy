@@ -8,7 +8,7 @@ public class Main{
 		private int n;
 		private int[] T, P;
 		private int profit;
-		private int[] maxProb;
+//		private int[] maxProb;
 		public Resign(){
 			Scanner scn = new Scanner(System.in);
 			n = scn.nextInt();
@@ -17,13 +17,15 @@ public class Main{
 			for(int i = 0; i < n; i++){
 				T[i] = scn.nextInt();
 				P[i] = scn.nextInt();
+				if(T[i] + i > n)
+					P[i] = 0;
 			}
 			scn.close();
 			profit = 0;
 		}
 		public void solve() {
 			//we use 'maxProb' array
-			maxProb = new int[n];
+/*			maxProb = new int[n];
 			Arrays.fill(maxProb, 0);
 			for(int i = 0; i < n; i++){
 				if(T[i] + i < n+1){
@@ -34,8 +36,7 @@ public class Main{
 				}
 				else if(i != 0)
 					maxProb[i] = maxProb[i-1];
-			}
-			
+			}*/
 			counsel(0, 0);
 		}
 		
@@ -45,8 +46,8 @@ public class Main{
 					profit = price;
 				return;
 			}
-			if(price + maxProb[idx] < profit)
-				return;
+//			if(price + maxProb[idx] < profit)
+//				return;
 			
 			//when counseling today(idx day)
 			if(idx+T[idx] <= n)
