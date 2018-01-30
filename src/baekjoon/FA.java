@@ -1,4 +1,3 @@
-//¹Ì¿Ï¼º!!!!!!!!!!!
 package baekjoon;
 
 import java.util.Scanner;
@@ -18,12 +17,16 @@ public class FA{
 	}
 	
 	private static boolean check(int n){
-		int digit;
-//		while(true){
-			digit = (int)Math.log10(n)+1;
-			
-			System.out.println(digit);
-//		}
+		int digit, prev, next;
+		prev = n;
+		for(int i = 0; i < 100; i++){
+			digit = (int)Math.log10(prev);
+			next = (int) ((prev / Math.pow(10, digit)) * (digit+1));
+			if(next == prev)
+				return true;
+//			System.out.println(next);
+			prev = next;
+		}
 		return false;
 	}
 }
