@@ -20,49 +20,60 @@ public class Main{
 			scn.close();
 			max = 0;
 		}
-		public void switchFlag(){
-			boolean[][] flag = new boolean[m][n];
-			
-			//first, find the max
-			int max = 0;
-			for(int i = 0; i < m; i++){
-				for(int j = 0; j < n; j++){
-					if(map[i][j] > max)
-						max = map[i][j];
-					flag[i][j] = false;
-				}
-			}
-			
-			//set flags
-			for(int k = max; k > 0; k--){
-				for(int i = 0; i < m; i++){
-					for(int j = 0; j < n; j++){
-						if(map[i][j] == max)
-							flag[i][j] = true;
-					}
-				}
-				//check whether there are tetrominos
-				if(findTetro(flag))
-					break;
-			}
-			
-			return;
-		}
-		private boolean findTetro(boolean[][] flag) {
-			for(int i = 0; i < m; i++){
-				for(int j = 0; j < n; j++){
-					if(flag[i][j])
-				}
-			}
-			return false;
-		}
 		public int getMax(){
 			return max;
+		}
+		
+		public void find(){
+			dfs(0, 0, 0, (byte)3, 0);
+		}
+		
+		private void dfs(int i, int j, int depth, byte straightFlag, int sum){
+			//straightFlag:	0	-> impossible to make で shape
+			//				1	-> possible to make で, ぬ shape
+			//				2	-> possible to make た, っ shape
+			//				3	-> possible to make で, ぬ, た, っ shape
+			//straightFlag : all false -> it's impossible to make で shape
+			//straightFlag[0] : true -> possible to make で, ぬ shape
+			//straightFlag[1] : true -> possible to make た, っ shape
+			
+			sum += map[i][j];
+			
+			if(depth == 4){
+				//search finished
+				if(sum > this.max)
+					this.max = sum;
+				return;
+			}
+			
+			if(i > 0){
+				if(straightFlag % 2 == 1)
+					dfs(i-1, j, depth+1, (byte)1, sum);
+				else
+					dfs(i-1, j, depth+1, (byte)0, sum);
+			}
+			if(i < n-1){
+				if(straightFlag % 2 == 1)
+					dfs(i+1, j, depth+1, (byte)1, sum);
+				else
+					dfs(i+1, j, depth+1, (byte)0, sum);
+			}
+			if(j > 0){
+				if(straightFlag > 1)
+					dfs()
+			}
+				
+			
+			if(depth == 3){
+				
+			}
+			
+			dfs()
 		}
 	}
 	public static void main(String[] args){
 		Tet solution = new Tet();
-		solution.switchFlag();
+		solution.find();
 		System.out.print(solution.getMax());
 	}
 }
