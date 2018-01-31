@@ -29,7 +29,7 @@ public class Main{
 		}
 		
 		public void find(){
-			dfs(0, 0, 0, (byte)3, 0);
+			dfs(0, 0, 0, true, (byte)0, 0);
 		}
 		
 		private void dfs(int i, int j, int depth, boolean straightFlag, byte beforeLocation, int sum){
@@ -40,47 +40,54 @@ public class Main{
 			
 			sum += map[i][j];
 			
-			if(depth == 4){
+			if(depth == 3){
 				//search finished
 				if(sum > this.max)
 					this.max = sum;
 				return;
 			}
-			if(sum + inputmax * (4-depth) < this.max)
+			if(sum + inputmax * (3-depth) < this.max)
 				return;
 			
 			if(j > 0 && beforeLocation != 1){
 				//left search
-				if(beforeLocation == 2 && straightFlag)
+				if((beforeLocation == 2 || beforeLocation == 0) && straightFlag)
 					dfs(i, j-1, depth+1, true, (byte)2, sum);
 				else
 					dfs(i, j-1, depth+1, false, (byte)2, sum);
 			}
 			if(j < n-1 && beforeLocation != 2){
 				//right search
-				if(beforeLocation == 1 && straightFlag)
+				if((beforeLocation == 1 || beforeLocation == 0) && straightFlag)
 					dfs(i, j+1, depth+1, true, (byte)1, sum);
 				else
 					dfs(i, j+1, depth+1, false, (byte)1, sum);
 			}
 			if(i > 0 && beforeLocation != 3){
 				//top search
-				if(beforeLocation == 4 && straightFlag)
+				if((beforeLocation == 4 || beforeLocation == 0) && straightFlag)
 					dfs(i-1, j, depth+1, true, (byte)4, sum);
 				else
 					dfs(i-1, j, depth+1, false, (byte)4, sum);
 			}
 			if(i < m-1 && beforeLocation != 4){
 				//bottom search
-				if(beforeLocation == 3 && straightFlag)
+				if((beforeLocation == 3 || beforeLocation == 0) && straightFlag)
 					dfs(i+1, j, depth+1, true, (byte)3, sum);
 				else
 					dfs(i+1, j, depth+1, false, (byte)3, sum);
 			}
 			
-			if(depth == 3 && straightFlag){
+			if(depth == 2 && straightFlag){
 				//consider the case of た, っ, で, ぬ
-				
+				if(beforeLocation % 2 == 1)
+					dfs(i-1, j-1, depth+1, false, (byte)-1, sum);
+				if(beforeLocation == 2 || beforeLocation == 3)
+					dfs(i-1, j+1, depth+1, false, (byte)-1, sum);
+				if(beforeLocation == 1 || beforeLocation == 4)
+					dfs(i+1, j-1, depth+1, false, (byte)-1, sum);
+				if(beforeLocation % 2 == 0)
+					dfs(i+1, j+1, depth+1, false, (byte)-1, sum);
 			}
 			
 			return;
