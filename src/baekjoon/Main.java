@@ -19,11 +19,11 @@ public class Main{
 		
 		public void setFlag(){
 			// set the flag of i*i's multiples 'true'
-			int idx = 2;
-			for(; idx < 1000000; idx++){
+			long idx = 2;
+			for(; idx <= 1000000; idx++){
 				if(idx*idx < min)	continue;
 				if(idx*idx > max)	break;
-				for(int j = idx*idx; j <= max; j += idx*idx){
+				for(long j = idx*idx; j <= max; j += idx*idx){
 					flag[(int) (j-min)] = true;
 				}
 			}
