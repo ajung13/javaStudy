@@ -29,10 +29,39 @@ public class HelloWorld {
 		return;
 */
 		
-		Unknown1 sol = new Unknown1();
+/*		Unknown1 sol = new Unknown1();
 		sol.findSolution();
 		return;
+*/
 		
+		int a = 1;
+		int b = 2;
+		Integer insA = new Integer(1);
+		Integer insB = new Integer(2);
+		
+		System.out.println("(before) int a: " + a + ", b: " + b);
+		System.out.println("(before) Integer a: " + a + ", b: " + b);
+		System.out.println();
+		
+		swap(a, b);
+		swap(insA, insB);
+		System.out.println();
+		
+		System.out.println("(after) int a: " + a + ", b: " + b);
+		System.out.println("(after) Integer a: " + a + ", b: " + b);
+	}
+	
+	private static void swap(int a, int b){
+		int tmp = a;
+		a = b;
+		b = tmp;
+		System.out.println("(function) int a: " + a + ", b: " + b);
+	}
+	private static void swap(Integer a, Integer b){
+		Integer tmp = new Integer(a);
+		a = b;
+		b = tmp;
+		System.out.println("(function) Integer a: " + a + ", b: " + b);
 	}
 	
 	private static int scanInt(){
