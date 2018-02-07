@@ -161,40 +161,41 @@ public class Main{
 		private void dfs(int depth, int[][] block){
 			System.out.println("depth: " + depth);
 			if(depth > 5){
-				printBlocks(block);
+//				printBlocks(block);
 				for(int i = 0; i < n*n; i++){
 					if(block[i/n][i%n] > this.max)
 						max = block[i/n][i%n];
 				}
+				return;
 			}
 			
 			int[][] initBlock = new int[n][n];
-			System.arraycopy(block, 0, initBlock, 0, n*n);
+			myArrayCopy(block, initBlock);
 			boolean checkFlag = false;
 			
 			move(block, 0);
-			if(!Arrays.equals(initBlock, block)){
+			if(!myEquals(block, initBlock)){
 				dfs(depth+1, block);
 				checkFlag = true;
 			}
 
-			System.arraycopy(initBlock, 0, block, 0, n*n);
+			myArrayCopy(initBlock, block);
 			move(block, 1);
-			if(!Arrays.equals(initBlock, block)){
+			if(!myEquals(block, initBlock)){
 				dfs(depth+1, block);
 				checkFlag = true;
 			}
 			
-			System.arraycopy(initBlock, 0, block, 0, n*n);
+			myArrayCopy(initBlock, block);
 			move(block, 2);
-			if(!Arrays.equals(initBlock, block)){
+			if(!myEquals(block, initBlock)){
 				dfs(depth+1, block);
 				checkFlag = true;
 			}
 			
-			System.arraycopy(initBlock, 0, block, 0, n*n);
+			myArrayCopy(initBlock, block);
 			move(block, 3);
-			if(!Arrays.equals(initBlock, block)){
+			if(!myEquals(block, initBlock)){
 				dfs(depth+1, block);
 				checkFlag = true;
 			}
@@ -205,6 +206,20 @@ public class Main{
 						max = block[i/n][i%n];
 				}
 			}
+		}
+		private void myArrayCopy(int[][] src, int[][] dest){
+			for(int i = 0; i < n; i++)
+				System.arraycopy(src[i], 0, dest[i], 0, n);
+		}
+		private boolean myEquals(int[][] src, int[][] dest){
+			boolean flag = true;
+			for(int i = 0; i < n*n; i++){
+				if(src[i/n][i%n] != dest[i/n][i%n]){
+					flag = false;
+					break;
+				}
+			}
+			return flag;
 		}
 	}
 	public static void main(String[] args){
