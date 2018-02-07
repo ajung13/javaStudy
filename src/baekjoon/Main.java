@@ -204,6 +204,7 @@ public class Main{
 						max = block[i/n][i%n];
 				}
 			}
+			initBlock = null;
 		}
 		private void myArrayCopy(int[][] src, int[][] dest){
 			for(int i = 0; i < n; i++)
