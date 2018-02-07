@@ -1,6 +1,7 @@
 package baekjoon;
 
 import java.util.Scanner;
+import java.util.Arrays;
 
 public class Main{
 	private static class board{
@@ -20,7 +21,7 @@ public class Main{
 			this.max = 0;
 		}
 		public void solve(){
-			
+			dfs(0, blocks);
 		}
 		public int getMax(){
 			return this.max;
@@ -34,7 +35,7 @@ public class Main{
 				System.out.print(block[i/n][i%n] + " ");
 			}
 		}
-		private int[][] move(int[][] block, int direction){
+		private void move(int[][] block, int direction){
 			//direction: 0 (up) 1 (down) 2 (left) 3 (right)
 			boolean[] mergeFlag = new boolean[n];
 			for(int i = 0 ; i < n; i++){
@@ -155,7 +156,55 @@ public class Main{
 						break;
 				}
 			}
-			return block;
+			return;
+		}
+		private void dfs(int depth, int[][] block){
+			System.out.println("depth: " + depth);
+			if(depth > 5){
+				printBlocks(block);
+				for(int i = 0; i < n*n; i++){
+					if(block[i/n][i%n] > this.max)
+						max = block[i/n][i%n];
+				}
+			}
+			
+			int[][] initBlock = new int[n][n];
+			System.arraycopy(block, 0, initBlock, 0, n*n);
+			boolean checkFlag = false;
+			
+			move(block, 0);
+			if(!Arrays.equals(initBlock, block)){
+				dfs(depth+1, block);
+				checkFlag = true;
+			}
+
+			System.arraycopy(initBlock, 0, block, 0, n*n);
+			move(block, 1);
+			if(!Arrays.equals(initBlock, block)){
+				dfs(depth+1, block);
+				checkFlag = true;
+			}
+			
+			System.arraycopy(initBlock, 0, block, 0, n*n);
+			move(block, 2);
+			if(!Arrays.equals(initBlock, block)){
+				dfs(depth+1, block);
+				checkFlag = true;
+			}
+			
+			System.arraycopy(initBlock, 0, block, 0, n*n);
+			move(block, 3);
+			if(!Arrays.equals(initBlock, block)){
+				dfs(depth+1, block);
+				checkFlag = true;
+			}
+			
+			if(!checkFlag){
+				for(int i = 0; i < n*n; i++){
+					if(block[i/n][i%n] > this.max)
+						max = block[i/n][i%n];
+				}
+			}
 		}
 	}
 	public static void main(String[] args){
