@@ -1,7 +1,6 @@
 package baekjoon;
 
 import java.util.Scanner;
-import java.util.Arrays;
 
 public class Main{
 	private static class board{
@@ -34,6 +33,7 @@ public class Main{
 					System.out.println();
 				System.out.print(block[i/n][i%n] + " ");
 			}
+			System.out.println();
 		}
 		private void move(int[][] block, int direction){
 			//direction: 0 (up) 1 (down) 2 (left) 3 (right)
@@ -159,9 +159,7 @@ public class Main{
 			return;
 		}
 		private void dfs(int depth, int[][] block){
-			System.out.println("depth: " + depth);
-			if(depth > 5){
-//				printBlocks(block);
+			if(depth > 4){
 				for(int i = 0; i < n*n; i++){
 					if(block[i/n][i%n] > this.max)
 						max = block[i/n][i%n];
