@@ -1,31 +1,36 @@
 package baekjoon;
+
 import java.util.Scanner;
+import java.util.ArrayList;
 
 public class Main {
 	private static class Map{
+		//class member variable
 		private int n;
-		private int[][] myMap;
-		private Snake mySnake;
-		private int[][] moving;
+		private ArrayList<Snake> snake;
+		private Snake cur;
+		private int[][] move;
+		private int direction;
+		
 		public Map(){
 			Scanner scn = new Scanner(System.in);
 			n = scn.nextInt();
-			mySnake = new Snake(n);
-			n = 2*n+1;
-			myMap = new int[n][n];
-			myMap[(n-1)/2][(n-1)/2] = 2;
+			cur = new Snake(n, n);
+			snake = new ArrayList<>();
+			snake.add(new Snake(n, n));
 			
 			int tmp = scn.nextInt();
-			moving = new int[tmp][2];
+			move = new int[tmp][2];
 			for(int i = 0; i < tmp; i++){
 				if(i == 0)
-					moving[i][0] = scn.nextInt();
+					move[i][0] = scn.nextInt();
 				else
-					moving[i][0] = scn.nextInt() + moving[i-1][0];
-				moving[i][1] = (scn.next().charAt(0) == 'L')? 0:1;
-				//0: left, 1: right
+					move[i][0] = move[i-1][0] + scn.nextInt();
+				move[i][1] = (scn.next().charAt(0) == 'L')? 0:1;
 			}
 			scn.close();
+			
+			n = n*2+1;
 		}
 		
 		public void startMoving(){
@@ -33,48 +38,49 @@ public class Main {
 			int moveIdx = 0;
 			
 			for(; time < Integer.MAX_VALUE; time++){
-				printMap();
-				if(moveIdx < moving.length && moving[moveIdx][0] == time){
+				if(moveIdx < move.length && move[moveIdx][0] == time){
 					//time to change direction
-					if(moving[moveIdx][1] == 0)
-						mySnake.direction = (mySnake.direction + 1)%4;
+					if(move[moveIdx][1] == 0)
+						direction = (direction + 1)%4;
 					else
-						mySnake.direction = (mySnake.direction + 3)%4;
+						direction = (direction + 3)%4;
 					moveIdx++;
 				}
 				
 				//move snake
-				mySnake.i += (mySnake.direction-2)%2;
-				mySnake.j -= (mySnake.direction-1)%2;
+				cur.i += (direction-2)%2;
+				cur.j -= (direction-1)%2;
 				
 				//game over check
-				if(mySnake.i < 0 || mySnake.i >= n || mySnake.j < 0 || mySnake.j >= n)
+				if(cur.i < 0 || cur.i >= n || cur.j < 0 || cur.j >= n)
 					break;
-				if(myMap[mySnake.i][mySnake.j] == 2)
+				if(meetMe())
 					break;
 				
-				myMap[mySnake.i][mySnake.j] = 2;
+				snake.add(new Snake(cur.i, cur.j));
 			}
 			
 			System.out.print(time+1);
 		}
-		
-		private void printMap(){
-			for(int i = 0; i < n; i++){
-				for(int j = 0; j < n; j++)
-					System.out.print(myMap[i][j] + " ");
-				System.out.println();
+
+		private boolean meetMe(){
+			boolean flag = false;
+			for(Snake tmp : snake){
+				if(tmp.i == cur.i && tmp.j == cur.j){
+					flag = true;
+					break;
+				}
 			}
-			System.out.println();
+			return flag;
 		}
+
 	}
 	
 	private static class Snake{
 		public int i, j;
-		public int direction;
-		public Snake(int l){
-			i = l;	j = l;
-			direction = 0;
+		public Snake(int i, int j){
+			this.i = i;
+			this.j = j;
 		}
 	}
 
