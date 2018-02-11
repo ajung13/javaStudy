@@ -35,8 +35,8 @@ public class Main {
 			int moveIdx = 0;
 			
 			for(; time < Integer.MAX_VALUE; time++){
-				printMap();
-				if(moving[moveIdx][0] == time){
+//				printMap();
+				if(moveIdx < moving.length && moving[moveIdx][0] == time){
 					//time to change direction
 					if(moving[moveIdx][1] == 0){
 						//move left
@@ -66,7 +66,7 @@ public class Main {
 				}
 				else{
 					myMap[mySnake.i][mySnake.j] = 2;
-//					traceTail();
+					traceTail(moveIdx-1, time+1);
 				}
 			}
 			System.out.print(time+1);
@@ -82,16 +82,49 @@ public class Main {
 			}
 			System.out.println();
 		}
+		private void traceTail(int moveIdx, int time){
+			int x = mySnake.i;
+			int y = mySnake.j;
+			int direction = mySnake.direction;
+			int idx = moveIdx;
+			
+			for(int j = time; j >= 0; j--){
+				if(x < 0 || x >= n || y < 0 || y >= n){
+					System.out.println("Unexpected error");
+					return;
+				}
+				if(idx >= 0 && moving[idx][0] == j){
+					//change direction at that time
+					if(moving[idx][1] == 1){
+						//it WAS right
+						direction = (direction + 1) % 4;
+					}
+					else
+						direction = (direction + 3) % 4;
+					idx--;
+				}
+				
+				x -= (direction-2) % 2;
+				y += (direction-1) % 2;
+				
+				if(x < 0 || y < 0 || x >= n || y >= n || myMap[x][y] != 2){
+					x += (direction-2) % 2;
+					y -= (direction-1) % 2;
+					break;
+				}
+			}
+			
+			//delete tail!
+			myMap[x][y] = 0;
+		}
 	}
 	
 	private static class snake{
 		public int i, j;			// the head position of snake
-		public int tail_i, tail_j;	// the tail position of snake
 		public int direction;		// 0: right 1: up 2: left 3: down
 		public snake(){
 			i = 0; j = 0;
 			direction = 0;
-			tail_i = 0; tail_j = 0;
 		}
 	}
 
