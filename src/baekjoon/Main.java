@@ -31,7 +31,7 @@ public class Main {
 			mySnake = new snake();
 		}
 		public void startGame(){
-			int time = 1;
+			int time = 0;
 			int moveIdx = 0;
 			
 			for(; time < Integer.MAX_VALUE; time++){
@@ -66,10 +66,10 @@ public class Main {
 				}
 				else{
 					myMap[mySnake.i][mySnake.j] = 2;
-					traceTail();
+//					traceTail();
 				}
 			}
-			System.out.print(time);
+			System.out.print(time+1);
 		}
 		
 		//private methods
