@@ -1,229 +1,49 @@
 package baekjoon;
-
 import java.util.Scanner;
 
-public class Main{
-	private static class board{
-	//variables
+public class Main {
+	private static class Map{
+		//class member variable
 		private int n;
-		private int[][] blocks;
-		private int max;
+		private int[][] myMap;			// 0: empty 1: apple
+		private snake mySnake;
+		private int[][] moving;			// the direction of snake
 		
-	//public methods and constructor
-		public board(){
+		//public method and constructor
+		public Map(){
 			Scanner scn = new Scanner(System.in);
-			this.n = scn.nextInt();
-			blocks = new int[n][n];
-			for(int i = 0; i < n*n; i++)
-				blocks[i/n][i%n] = scn.nextInt();
+			n = scn.nextInt();
+			myMap = new int[n][n];
+			
+			int inputCase = scn.nextInt();
+			for(int i = 0; i < inputCase; i++)
+				myMap[scn.nextInt()-1][scn.nextInt()-1] = 1;
+			
+			inputCase = scn.nextInt();
+			moving = new int[inputCase][2];	//moving[][1]=0: left 1: right
+			for(int i = 0; i < inputCase; i++){
+				moving[i][0] = scn.nextInt();
+				moving[i][1] = (scn.next().charAt(0) == 'D')? 1:0;
+			}
 			scn.close();
-			this.max = 0;
 		}
-		public void solve(){
-			dfs(0, blocks);
-		}
-		public int getMax(){
-			return this.max;
-		}
-		
-	//private methods
-		private void printBlocks(int[][] block){
-			for(int i = 0; i < n*n; i++){
-				if(i%n == 0)
-					System.out.println();
-				System.out.print(block[i/n][i%n] + " ");
-			}
-			System.out.println();
-		}
-		private void move(int[][] block, int direction){
-			//direction: 0 (up) 1 (down) 2 (left) 3 (right)
-			boolean[] mergeFlag = new boolean[n];
-			for(int i = 0 ; i < n; i++){
-				//when direction is 0/1, i will be the column
-				//and when direction is 2/3, i will be the row
+		public void startGame(){
+			for(int time = 0; time < Integer.MAX_VALUE; time++){
 				
-				//initialize mergeFlag
-				for(int j = 0; j < n; j++)
-					mergeFlag[j] = false;
-				
-				int j, idx;		//idx: last nonempty place
-				if(direction%2==0){
-					//check block[1][i] -> block[n-1][i]	(direction: 0)
-					//		block[i][1] -> block[i][n-1]	(direction: 2)
-					j = 1;
-					if(direction == 0 && block[0][i] != 0)
-						idx = 0;
-					else if(direction == 2 && block[i][0] != 0)
-						idx = 0;
-					else
-						idx = -1;
-				}
-				else{
-					//check block[n-2][i] -> block[0][i]	(direction: 1)
-					//		block[i][n-2] -> block[i][0]	(direction: 3)
-					j = n-2;
-					if(direction == 1 && block[n-1][i] != 0)
-						idx = n-1;
-					else if(direction == 3 && block[i][n-1] != 0)
-						idx = n-1;
-					else
-						idx = n;
-				}
-				
-				while(true){
-					//check block[j][i]		(direction: 0, 1)
-					//		block[i][j]		(direction: 2, 3)
-					
-					if((direction/2 == 0 && block[j][i] != 0) || (direction/2 == 1 && block[i][j] != 0)){
-						//nonempty
-						if(direction%2==0 && idx+1!=j){
-							//there are empty place
-							if(direction == 0){
-								block[idx+1][i] = block[j][i];
-								block[j][i] = 0;
-							}
-							else{
-								block[i][idx+1] = block[i][j];
-								block[i][j] = 0;
-							}
-							j = idx+1;
-							continue;
-						}
-						else if(direction%2==1 && idx-1!=j){
-							//there are empty place
-							if(direction == 1){
-								block[idx-1][i] = block[j][i];
-								block[j][i] = 0;
-							}
-							else{
-								block[i][idx-1] = block[i][j];
-								block[i][j] = 0;
-							}
-							j = idx-1;
-							continue;
-						}
-						
-						idx = j;
-						if((direction%2 == 0 && j != 0) || (direction%2==1 && j != n-1)){
-							//if block is same with prev block, merge them
-							switch(direction){
-							case 0:
-								if(block[j][i] == block[j-1][i] && !mergeFlag[j-1]){
-									block[j-1][i] *= 2;
-									block[j][i] = 0;
-									mergeFlag[j-1] = true;
-									idx--;
-									continue;
-								}
-								break;
-							case 1:
-								if(block[j][i] == block[j+1][i] && !mergeFlag[j+1]){
-									block[j+1][i] *= 2;
-									block[j][i] = 0;
-									mergeFlag[j+1] = true;
-									idx++;
-									continue;
-								}
-								break;
-							case 2:
-								if(block[i][j] == block[i][j-1] && !mergeFlag[j-1]){
-									block[i][j-1] *= 2;
-									block[i][j] = 0;
-									mergeFlag[j-1] = true;
-									idx--;
-									continue;
-								}
-								break;
-							case 3:
-								if(block[i][j] == block[i][j+1] && !mergeFlag[j+1]){
-									block[i][j+1] *= 2;
-									block[i][j] = 0;
-									mergeFlag[j+1] = true;
-									idx++;
-									continue;
-								}
-								break;
-							}
-						}
-					}
-					
-					//for running loop
-					if(direction%2==0 && j<n-1)
-						j++;
-					else if(direction%2==1 && j>0)
-						j--;
-					else
-						break;
-				}
 			}
-			return;
 		}
-		private void dfs(int depth, int[][] block){
-			if(depth > 4){
-				for(int i = 0; i < n*n; i++){
-					if(block[i/n][i%n] > this.max)
-						max = block[i/n][i%n];
-				}
-				return;
-			}
-			
-			int[][] initBlock = new int[n][n];
-			myArrayCopy(block, initBlock);
-			boolean checkFlag = false;
-			
-			move(block, 0);
-			if(!myEquals(block, initBlock)){
-				dfs(depth+1, block);
-				checkFlag = true;
-			}
+	}
+	
+	private static class snake{
+		public int i, j;
+		public snake(){
+			i = 0; j = 0;
+		}
+	}
 
-			myArrayCopy(initBlock, block);
-			move(block, 1);
-			if(!myEquals(block, initBlock)){
-				dfs(depth+1, block);
-				checkFlag = true;
-			}
-			
-			myArrayCopy(initBlock, block);
-			move(block, 2);
-			if(!myEquals(block, initBlock)){
-				dfs(depth+1, block);
-				checkFlag = true;
-			}
-			
-			myArrayCopy(initBlock, block);
-			move(block, 3);
-			if(!myEquals(block, initBlock)){
-				dfs(depth+1, block);
-				checkFlag = true;
-			}
-			
-			if(!checkFlag){
-				for(int i = 0; i < n*n; i++){
-					if(block[i/n][i%n] > this.max)
-						max = block[i/n][i%n];
-				}
-			}
-			initBlock = null;
-		}
-		private void myArrayCopy(int[][] src, int[][] dest){
-			for(int i = 0; i < n; i++)
-				System.arraycopy(src[i], 0, dest[i], 0, n);
-		}
-		private boolean myEquals(int[][] src, int[][] dest){
-			boolean flag = true;
-			for(int i = 0; i < n*n; i++){
-				if(src[i/n][i%n] != dest[i/n][i%n]){
-					flag = false;
-					break;
-				}
-			}
-			return flag;
-		}
+	public static void main(String[] args) {
+		Map solution = new Map();
+		solution.startGame();
 	}
-	public static void main(String[] args){
-		board solution = new board();
-		solution.solve();
-		System.out.print(solution.getMax());
-	}
+
 }
