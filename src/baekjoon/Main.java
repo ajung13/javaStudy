@@ -7,7 +7,9 @@ public class Main {
 	private static class Map{
 		//class member variable
 		private int n;
-		private ArrayList<Snake> snake;
+//		private ArrayList<Snake> snake;
+		private ArrayList<ArrayList<Snake>> snake_group;
+		private ArrayList<Snake> snake_child;
 		private Snake cur;
 		private int[][] move;
 		private int direction;
@@ -16,8 +18,12 @@ public class Main {
 			Scanner scn = new Scanner(System.in);
 			n = scn.nextInt();
 			cur = new Snake(n, n);
-			snake = new ArrayList<>();
-			snake.add(new Snake(n, n));
+//			snake = new ArrayList<>();
+//			snake.add(new Snake(n, n));
+			snake_group = new ArrayList<ArrayList<Snake>>();
+			snake_child = new ArrayList<Snake>();
+			snake_child.add(cur);
+			snake_group.add(snake_child);
 			
 			int tmp = scn.nextInt();
 			move = new int[tmp][2];
@@ -38,6 +44,8 @@ public class Main {
 			int moveIdx = 0;
 			
 			for(; time < Integer.MAX_VALUE; time++){
+				if(time == 50000)
+					System.out.println("hi");
 				if(moveIdx < move.length && move[moveIdx][0] == time){
 					//time to change direction
 					if(move[moveIdx][1] == 0)
@@ -57,21 +65,61 @@ public class Main {
 				if(meetMe())
 					break;
 				
-				snake.add(new Snake(cur.i, cur.j));
+//				snake.add(new Snake(cur.i, cur.j));
+				insert(cur.i, cur.j);
 			}
 			
 			System.out.print(time+1);
 		}
 
 		private boolean meetMe(){
-			boolean flag = false;
+/*			boolean flag = false;
 			for(Snake tmp : snake){
 				if(tmp.i == cur.i && tmp.j == cur.j){
 					flag = true;
 					break;
 				}
 			}
+			return flag;*/
+			
+/*			if(snake.indexOf(cur) < 0)
+				return false;
+			else
+				return true;*/
+			
+			boolean flag = false;
+			int idx;
+			for(idx = 0; idx < snake_group.size(); idx++){
+				if(snake_group.get(idx).get(0).i == cur.i){
+					flag = true;
+					break;
+				}
+			}
+			
+			if(flag){
+				flag = false;
+				for(Snake tmp : snake_group.get(idx)){
+					if(tmp.j == cur.j){
+						flag = true;
+						break;
+					}
+				}
+			}
+			
 			return flag;
+		}
+		
+		private void insert(int i, int j){
+			for(int idx = 0; idx < snake_group.size(); idx++){
+				if(((Snake) snake_group.get(idx).get(0)).i == i){
+					snake_group.get(idx).add(new Snake(i, j));
+					return;
+				}
+			}
+			
+			snake_child = new ArrayList<Snake>();
+			snake_child.add(new Snake(i, j));
+			snake_group.add(snake_child);
 		}
 
 	}
