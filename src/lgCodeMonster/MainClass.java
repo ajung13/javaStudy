@@ -32,6 +32,8 @@ public class MainClass {
 			
 			solution.delete();
 		}
+		
+		scn.close();
 	}
 
 }
