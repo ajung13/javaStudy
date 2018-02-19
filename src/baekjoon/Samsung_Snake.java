@@ -3,7 +3,7 @@ package baekjoon;
 import java.util.Scanner;
 import java.util.ArrayList;
 
-public class Main {
+public class Samsung_Snake {
 	private static class Map{
 		//class member variable
 		private int n;
@@ -22,7 +22,7 @@ public class Main {
 //			snake.add(new Snake(n, n));
 			snake_group = new ArrayList<ArrayList<Snake>>();
 			snake_child = new ArrayList<Snake>();
-			snake_child.add(cur);
+			snake_child.add(new Snake(cur.i, cur.j));
 			snake_group.add(snake_child);
 			
 			int tmp = scn.nextInt();
@@ -132,7 +132,7 @@ public class Main {
 		}
 	}
 
-	public static void main(String[] args) {
+	public static void mainSnake(String[] args) {
 		Map solution = new Map();
 		solution.startMoving();
 	}
