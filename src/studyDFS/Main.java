@@ -6,20 +6,22 @@ public class Main{
 	private static class Relation{
 		//private member variables
 		private int n;
-		private boolean[] friend;
+		private int[] friend;
 		
 		//public methods and constructor
 		public Relation(int n){
 			this.n = n;
-			friend = new boolean[(n*(n-1))/2];
+			friend = new int[(n*(n-1))/2];
 		}
 		public void newRelationship(int a, int b){
 			a--;	b--;
-			friend[idx(a, b)] = true;
+			friend[idx(a, b)] = 1;
 		}
 		public int run(){
 			int minBacon = Integer.MAX_VALUE;
 			int minPerson = -1;
+			
+			setFriends();
 			
 			for(int i = 0; i < n; i++){
 				int tmp = KevinBacon(i);
@@ -29,7 +31,7 @@ public class Main{
 				}
 			}
 			
-			return minPerson;
+			return minPerson + 1;
 		}
 		
 		//private methods
@@ -42,7 +44,20 @@ public class Main{
 			return idx;
 		}
 		private int KevinBacon(int person){
-			return 0;
+			int sum = 0;
+			for(int i = 0; i < n; i++){
+				if(person == i)
+					continue;
+				sum += friend[idx(person, i)];
+			}
+			return sum;
+		}
+		private void setFriends(){
+			for(int i = 0; i < n; i++){
+				if(friend[i] != 0)
+					continue;
+				
+			}
 		}
 	}
 	public static void main(String[] args){
