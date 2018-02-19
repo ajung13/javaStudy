@@ -12,6 +12,8 @@ public class Main{
 		public Relation(int n){
 			this.n = n;
 			friend = new int[(n*(n-1))/2];
+			for(int i = 0; i < friend.length; i++)
+				friend[i] = Integer.MAX_VALUE;
 		}
 		public void newRelationship(int a, int b){
 			a--;	b--;
@@ -53,11 +55,6 @@ public class Main{
 			return sum;
 		}
 		private void setFriends(){
-			for(int i = 0; i < n; i++){
-				if(friend[i] != 0)
-					continue;
-				
-			}
 		}
 	}
 	public static void main(String[] args){
