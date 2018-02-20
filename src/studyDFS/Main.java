@@ -9,6 +9,7 @@ public class Main{
 		private int n;
 		private int[][] distance;
 		private int minimum;
+		private int minPerson;
 		private boolean[] visited;
 		
 		//public methods and constructor
@@ -22,6 +23,7 @@ public class Main{
 					distance[i/n][i%n] = Integer.MAX_VALUE;
 			}
 			minimum = Integer.MAX_VALUE;
+			minPerson = -1;
 			visited = new boolean[n];
 		}
 		public void newRelationship(int a, int b){
@@ -29,25 +31,37 @@ public class Main{
 			distance[a][b] = 1;
 			distance[b][a] = 1;
 		}
-		public void run(){
+/*		public void run(){
 			for(int i = 0; i < n; i++)
 				KevinBacon(i);
-		}
+		}*/
 		public int min(){
-			return this.minimum;
+			return this.minPerson;
 		}
 		
 		//private methods
-		private void KevinBacon(int start){
+		private void KevinBacon(){
 			//get kevinBacon value by using Dijkstra algorithm and
 			//change the minimum when kevinBacon is smaller
-			Arrays.fill(visited, false);
-			for(int i = 0; i < n; i++)
-				dijkstra(i, 0, n-1);
+			for(int i = 0; i < n; i++){
+				Arrays.fill(visited, false);
+				dijkstra(i, i, n-1);
+				
+				for(int j = 0; j < i; j++)
+					distance[i][j] = distance[j][i];
+				
+				int sum = 0;
+				for(int j = 0; j < n; j++)
+					sum += distance[i][j];
+				if(sum < this.minimum){
+					this.minimum = sum;
+					this.minPerson = i+1;
+				}
+			}
 		}
-		private int dijkstra(int start, int pnt, int end){
+		private void dijkstra(int start, int pnt, int end){
 			if(pnt == end)
-				return distance[start][end];
+				return;
 			
 			visited[pnt] = true;
 			
@@ -62,7 +76,7 @@ public class Main{
 				}
 			}
 			
-			return dijkstra(start, min, end);
+			dijkstra(start, min, end);
 		}
 	}
 	public static void main(String[] args){
@@ -75,7 +89,8 @@ public class Main{
 		
 		scn.close();
 		
-		solution.run();
+//		solution.run();
+		solution.KevinBacon();
 		System.out.print(solution.min());
 	}
 }
