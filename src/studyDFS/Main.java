@@ -1,60 +1,68 @@
 package studyDFS;
 
+import java.util.Arrays;
 import java.util.Scanner;
 
 public class Main{
 	private static class Relation{
 		//private member variables
 		private int n;
-		private int[] friend;
+		private int[][] distance;
+		private int minimum;
+		private boolean[] visited;
 		
 		//public methods and constructor
 		public Relation(int n){
 			this.n = n;
-			friend = new int[(n*(n-1))/2];
-			for(int i = 0; i < friend.length; i++)
-				friend[i] = Integer.MAX_VALUE;
+			distance = new int[n][n];
+			for(int i = 0; i < n*n; i++){
+				if(i/n == i%n)
+					distance[i/n][i%n] = 0;
+				else
+					distance[i/n][i%n] = Integer.MAX_VALUE;
+			}
+			minimum = Integer.MAX_VALUE;
+			visited = new boolean[n];
 		}
 		public void newRelationship(int a, int b){
 			a--;	b--;
-			friend[idx(a, b)] = 1;
+			distance[a][b] = 1;
+			distance[b][a] = 1;
 		}
-		public int run(){
-			int minBacon = Integer.MAX_VALUE;
-			int minPerson = -1;
-			
-			setFriends();
-			
-			for(int i = 0; i < n; i++){
-				int tmp = KevinBacon(i);
-				if(tmp < minBacon){
-					minBacon = tmp;
-					minPerson = i;
-				}
-			}
-			
-			return minPerson + 1;
+		public void run(){
+			for(int i = 0; i < n; i++)
+				KevinBacon(i);
+		}
+		public int min(){
+			return this.minimum;
 		}
 		
 		//private methods
-		private int idx(int i, int j){
-			int idx;
-			if(i < j)
-				idx = n*i - i*(i+1)/2 + j - i - 1;
-			else
-				idx = n*j - j*(j+1)/2 + i - j - 1;
-			return idx;
+		private void KevinBacon(int start){
+			//get kevinBacon value by using Dijkstra algorithm and
+			//change the minimum when kevinBacon is smaller
+			Arrays.fill(visited, false);
+			for(int i = 0; i < n; i++)
+				dijkstra(i, 0, n-1);
 		}
-		private int KevinBacon(int person){
-			int sum = 0;
+		private int dijkstra(int start, int pnt, int end){
+			if(pnt == end)
+				return distance[start][end];
+			
+			visited[pnt] = true;
+			
+			int min = Integer.MAX_VALUE;
 			for(int i = 0; i < n; i++){
-				if(person == i)
-					continue;
-				sum += friend[idx(person, i)];
+				if(visited[i] == false && distance[pnt][i] != Integer.MAX_VALUE){
+					if(distance[start][i] > distance[start][pnt] + distance[pnt][i] && distance[start][pnt] != Integer.MAX_VALUE){
+						distance[start][i] = distance[start][pnt] + distance[pnt][i];
+					}
+					if(min == Integer.MAX_VALUE || distance[start][min] > distance[start][i])
+						min = i;
+				}
 			}
-			return sum;
-		}
-		private void setFriends(){
+			
+			return dijkstra(start, min, end);
 		}
 	}
 	public static void main(String[] args){
@@ -67,6 +75,7 @@ public class Main{
 		
 		scn.close();
 		
-		System.out.print(solution.run());
+		solution.run();
+		System.out.print(solution.min());
 	}
 }
