@@ -47,12 +47,13 @@ public class Main{
 				Arrays.fill(visited, false);
 				dijkstra(i, i, n-1);
 				
-				for(int j = 0; j < i; j++)
-					distance[i][j] = distance[j][i];
-				
 				int sum = 0;
-				for(int j = 0; j < n; j++)
-					sum += distance[i][j];
+				for(int j = 0; j < n; j++){
+					if(i < j)
+						sum += distance[i][j];
+					else
+						sum += distance[j][i];
+				}
 				if(sum < this.minimum){
 					this.minimum = sum;
 					this.minPerson = i+1;
@@ -61,6 +62,8 @@ public class Main{
 		}
 		private void dijkstra(int start, int pnt, int end){
 			if(pnt == end)
+				return;
+			if(pnt >= n || pnt < 0)
 				return;
 			
 			visited[pnt] = true;
