@@ -48,12 +48,27 @@ public class Main {
 			q.add(idx);
 			while(!q.isEmpty()){
 				Pos tmp = q.poll();
+				if(visited[tmp.x][tmp.y])
+					continue;
+				visited[tmp.x][tmp.y] = true;
+				System.out.println(tmp.x + ", " + tmp.y);
 				
+				if(tmp.x > 0 && map[tmp.x-1][tmp.y] > 0)
+					q.add(new Pos(tmp.x-1, tmp.y));
+				if(tmp.x < n-1 && map[tmp.x+1][tmp.y] > 0)
+					q.add(new Pos(tmp.x+1, tmp.y));
+				if(tmp.y > 0 && map[tmp.x][tmp.y-1] > 0)
+					q.add(new Pos(tmp.x, tmp.y-1));
+				if(tmp.y < n-1 && map[tmp.x][tmp.y+1] > 0)
+					q.add(new Pos(tmp.x, tmp.y+1));
 			}
 		}
 	}
 	private static class Pos{
 		public int x, y;
+		public Pos(int x, int y){
+			this.x = x;	this.y = y;
+		}
 	}
 	public static void main(String[] args) {
 		Map solution = new Map();
