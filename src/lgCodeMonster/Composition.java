@@ -3,10 +3,10 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
 
-public class MainClass {
+public class Composition {
 	static int testCase;
 
-	public static void main(String[] args) throws FileNotFoundException {
+	public static void main1(String[] args) throws FileNotFoundException {
 		String filePath = "C:\\Users\\cwhth\\workspace\\javaStudy\\src\\lgCodeMonster\\input.txt";
 		File file = new File(filePath);
 		Scanner scn = new Scanner(file);
