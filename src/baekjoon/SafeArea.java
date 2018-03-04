@@ -71,7 +71,7 @@ public class SafeArea {
 			this.x = x;	this.y = y;
 		}
 	}
-	public static void main(String[] args) {
+	public static void mainSafe(String[] args) {
 		Map solution = new Map();
 		int maxArea = 0;
 		
