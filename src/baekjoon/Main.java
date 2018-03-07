@@ -18,6 +18,7 @@ public class Main{
 			
 			for(int i = 0; i < cowCnt; i++){
 				cows[i] = new Cow();
+				cows[i].name = i;
 				cows[i].tall = scn.nextInt();
 				cows[i].weight = scn.nextInt();
 				cows[i].power = scn.nextInt();
@@ -28,82 +29,57 @@ public class Main{
 		}
 		
 		public void solve(){
+			LinkedList<Integer> list = new LinkedList<Integer>();
 			for(int i = 0; i < cowCnt; i++){
-				Queue<Integer> q = new <Integer>LinkedList();
-				dp(i, q, -1);
+				stack(list, i);
+				System.out.println("--------------------");
 			}
 		}
-		private void dp(int pointer, Queue q, int last){
-			//for debug
-			printQueue(q);
+		
+		private void stack(LinkedList<Integer> list, int cowNum){
+			int stability;
+			if(list.size() == 0)
+				stability = cows[cowNum].power;
+			else{
+				stability = list.pop();
+				stability -= cows[cowNum].weight * list.size();
+				if(stability < 0)
+					return;
+			}
+			list.push(cowNum);
+			list.push(stability);
 			
-			int stability = stableCheck(q);
+			for(int i = 0; i < list.size(); i++)
+				System.out.print(list.get(i) + " ");
+			System.out.println();
 			
-			//check the height
-			int height = heightCheck(q);
-			if(height >= mark){
-				//stability check
+			if(heightCheck(list)){
+				//height is taller than Mark
 				if(stability > maxStablity)
 					maxStablity = stability;
+				else
+					return;
+			}
+			
+			if(list.size() >= cowCnt)
 				return;
-			}
 			
-			//all cows are stacked but mark is too tall
-			if(pointer >= cowCnt)
-				return;
-			
-			//'pointer'th cow is not stacked
-			for(int i = 0; i < cowCnt; i++){
-				if(i == pointer)	continue;
-				if(q.contains(i))	continue;
-				dp(i, q, last);
-			}
-			
-			if(last == -1 || stability > cows[pointer].weight){
-				//first stack or 'pointer'th cow can be stacked
-				//put me
-				q.add(pointer);
-				for(int i = 0; i < cowCnt; i++){
-					if(i == pointer)	continue;
-					if(q.contains(i))	continue;
-					dp(i, q, pointer)
-				}
+			for(int i = 0 ; i < cowCnt; i++){
+				if(i == cowNum)	continue;
+				if(list.contains(i))	continue;
+				stack(list, i);
 			}
 		}
-		private int heightCheck(Queue q){
-			int height = 0;
-			while(q.peek()!=null){
-				int cow = (int)q.poll();
-				height += cows[cow].tall;
-			}
-			return height;
-		}
-		private int stableCheck(Queue q){
-			int[] power = new int[cowCnt];
-			int idx = 0;
-			
-			while(q.peek()!=null){
-				int cow = (int)q.poll();
-				power[idx] = cows[cow].power;
-				for(int i = 0; i < idx; i++)
-					power[idx] -= cows[cow].weight;
-			}
-			
-			idx = power[0];
-			for(int i = 1; i < cowCnt; i++){
-				if(power[i] < idx)
-					idx = power[i];
-			}
-			return idx;
-		}
-		private void printQueue(Queue q){
-			while(q.peek()!=null){
-				System.out.print(q.poll() + " ");
-			}
-			System.out.println();
+		
+		private boolean heightCheck(LinkedList<Integer> list){
+			int total = 0;
+			for(int i = 0; i < list.size()-1; i++)
+				total += cows[i].tall;
+			return (total >= mark);
 		}
 	}
 	private static class Cow{
+		private int name;
 		private int tall;
 		private int weight;
 		private int power;
