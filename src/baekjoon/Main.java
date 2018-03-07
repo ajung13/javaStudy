@@ -29,11 +29,17 @@ public class Main{
 		}
 		
 		public void solve(){
-			LinkedList<Integer> list = new LinkedList<Integer>();
 			for(int i = 0; i < cowCnt; i++){
+				LinkedList<Integer> list = new LinkedList<Integer>();
 				stack(list, i);
+				list = null;
 				System.out.println("--------------------");
 			}
+			
+			if(maxStablity == -1)
+				System.out.print("Mark is too tall");
+			else
+				System.out.print(maxStablity);
 		}
 		
 		private void stack(LinkedList<Integer> list, int cowNum){
@@ -49,32 +55,51 @@ public class Main{
 			list.push(cowNum);
 			list.push(stability);
 			
-			for(int i = 0; i < list.size(); i++)
+			for(int i = 0; i < list.size(); i++){
 				System.out.print(list.get(i) + " ");
+				if(i == 0)	System.out.print("/ ");
+			}
 			System.out.println();
 			
 			if(heightCheck(list)){
 				//height is taller than Mark
+				System.out.println("stab: " + stability);
 				if(stability > maxStablity)
 					maxStablity = stability;
-				else
-					return;
+				return;
 			}
+			else
+				System.out.println("stab: " + stability);
 			
 			if(list.size() >= cowCnt)
 				return;
 			
 			for(int i = 0 ; i < cowCnt; i++){
 				if(i == cowNum)	continue;
-				if(list.contains(i))	continue;
-				stack(list, i);
+				if(myContains(list, i))	continue;
+				LinkedList<Integer> copyList = new LinkedList<Integer>();
+				myCopy(list, copyList);
+				stack(copyList, i);
+				copyList = null;
 			}
+		}
+		
+		private boolean myContains(LinkedList<Integer> list, int key){
+			for(int i = 1; i < list.size(); i++)
+				if(list.get(i) == key)	return true;
+			return false;
+		}
+		
+		private void myCopy(LinkedList<Integer> src, LinkedList<Integer> des){
+			for(int i : src)
+				des.add(i);
 		}
 		
 		private boolean heightCheck(LinkedList<Integer> list){
 			int total = 0;
-			for(int i = 0; i < list.size()-1; i++)
-				total += cows[i].tall;
+			for(int i = 1; i < list.size(); i++)
+				total += cows[list.get(i)].tall;
+			System.out.print("height: " + total + " / ");
 			return (total >= mark);
 		}
 	}
