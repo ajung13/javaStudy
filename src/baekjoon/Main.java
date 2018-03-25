@@ -1,6 +1,7 @@
 package baekjoon;
 // Q1931: Convention Hall
 
+import java.util.Arrays;
 import java.util.Scanner;
 
 public class Main{
@@ -20,14 +21,21 @@ public class Main{
 		}
 		scn.close();
 		
-		boolean[] meetOK = new boolean[n];
-		int end = 0;
+		Arrays.sort(meeting, new java.util.Comparator<int[]>(){
+			public int compare(int[] a, int[] b){
+				return Integer.compare(a[1], b[1]);
+			}
+		});
+		
+//		boolean[] meetOK = new boolean[n];
+		int end = 0;				//index
 		int meetCnt = 0;
-		while(end < latestTime){
+		while(meeting[end][1] < latestTime){
 			//find the meeting which ends at the earlier time
-			int min = -1;
-			for(int idx = 0; idx < n; idx++){
-				if(meetOK[idx] || meeting[idx][0] < end)
+			int min = end;
+			for(int idx = end+1; idx < n; idx++){
+//				if(meetOK[idx] || meeting[idx][0] < meeting[end][1])
+				if(meeting[idx][0] < meeting[end][1])
 					continue;
 				if(min == -1 || meeting[idx][1] < meeting[min][1])
 					min = idx;
@@ -37,8 +45,8 @@ public class Main{
 				break;
 			
 			meetCnt++;
-			meetOK[min] = true;
-			end = meeting[min][1];
+//			meetOK[min] = true;
+			end = min;
 		}
 		
 //		for(int i = 0; i < n; i++)
