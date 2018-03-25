@@ -23,35 +23,30 @@ public class Main{
 		
 		Arrays.sort(meeting, new java.util.Comparator<int[]>(){
 			public int compare(int[] a, int[] b){
-				return Integer.compare(a[1], b[1]);
+				if(a[1] != b[1])
+					return Integer.compare(a[1], b[1]);
+				else
+					return Integer.compare(a[0], b[0]);
 			}
 		});
 		
-//		boolean[] meetOK = new boolean[n];
 		int end = 0;				//index
-		int meetCnt = 0;
+		int meetCnt = 1;
 		while(meeting[end][1] < latestTime){
 			//find the meeting which ends at the earlier time
-			int min = end;
-			for(int idx = end+1; idx < n; idx++){
-//				if(meetOK[idx] || meeting[idx][0] < meeting[end][1])
-				if(meeting[idx][0] < meeting[end][1])
-					continue;
-				if(min == -1 || meeting[idx][1] < meeting[min][1])
-					min = idx;
+			int idx = end + 1;
+			for(; idx < n; idx++){
+				if(meeting[idx][0] >= meeting[end][1])
+					break;
 			}
 			
-			if(min < 0)
+			if(idx >= n)
 				break;
 			
 			meetCnt++;
-//			meetOK[min] = true;
-			end = min;
+			end = idx;
 		}
 		
-//		for(int i = 0; i < n; i++)
-//			System.out.print(meetOK[i] + " ");
-//		System.out.print("\nanswer: " + meetCnt);
 		System.out.print(meetCnt);
 	}
 }
